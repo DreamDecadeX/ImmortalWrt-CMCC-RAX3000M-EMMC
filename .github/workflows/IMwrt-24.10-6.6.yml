@@ -325,7 +325,7 @@ jobs:
           git clone --depth=1 https://github.com/PlanetEditorX/luci-app-build.git
           mkdir -p openwrt/package/luci-app-keepalived-ha
           cp -r luci-app-build/luci-app-keepalived-ha/* openwrt/package/luci-app-keepalived-ha/
-          
+
       - name: 安装iStore商店
         if: (github.event.inputs.istore == 'true')
         run: |
@@ -348,6 +348,7 @@ jobs:
       - name: 添加 keepalived 相关插件
         run: |
           set -e
+          cd openwrt
           PLUGINS=(
             "CONFIG_PACKAGE_luci-app-keepalived=y"
             "CONFIG_PACKAGE_luci-app-keepalived-ha=y"
@@ -373,6 +374,11 @@ jobs:
             "CONFIG_PACKAGE_kmod-nf-ipvs=y"
             "CONFIG_PACKAGE_kmod-nf-ipvs-ftp=y"
             "CONFIG_PACKAGE_kmod-nf-ipvs-sip=y"
+            "CONFIG_IP_VS=y"
+            "CONFIG_IP_VS_PROTO_TCP=y"
+            "CONFIG_IP_VS_PROTO_UDP=y"
+            "CONFIG_IP_VS_RR=y"
+            "CONFIG_IP_VS_NFCT=y"
           )
 
           for plugin in "${PLUGINS[@]}"; do
