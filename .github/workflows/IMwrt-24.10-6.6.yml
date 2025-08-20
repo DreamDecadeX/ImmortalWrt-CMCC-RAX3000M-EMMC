@@ -42,7 +42,7 @@ on:
           - 'openwrt-24.10-6.6'
       config_file:
         description: '配置文件'
-        default: '24.10-6.6.config'
+        default: '24.10-6.6-office.config'
         type: choice
         options:
           - '24.10-6.6.config'
@@ -320,6 +320,12 @@ jobs:
           ./scripts/feeds update -a || { echo "更新 Feeds 失败"; exit 1; }
           ./scripts/feeds install -a || { echo "安装 Feeds 失败"; exit 1; }
 
+      - name: 添加 luci-app-keepalived-ha 插件
+        run: |
+          git clone --depth=1 https://github.com/PlanetEditorX/luci-app-build.git
+          mkdir -p openwrt/package/luci-app-keepalived-ha
+          cp -r luci-app-build/luci-app-keepalived-ha/* openwrt/package/luci-app-keepalived-ha/
+          
       - name: 安装iStore商店
         if: (github.event.inputs.istore == 'true')
         run: |
@@ -337,6 +343,46 @@ jobs:
           chmod +x $DIY_P2_SH
           cd openwrt
           $GITHUB_WORKSPACE/$DIY_P2_SH
+          make defconfig
+
+      - name: 添加 keepalived 相关插件
+        run: |
+          set -e
+          PLUGINS=(
+            "CONFIG_PACKAGE_luci-app-keepalived=y"
+            "CONFIG_PACKAGE_luci-app-keepalived-ha=y"
+            "CONFIG_PACKAGE_keepalived=y"
+            "CONFIG_KEEPALIVED_BFD=y"
+            "CONFIG_KEEPALIVED_SHA1=y"
+            "CONFIG_KEEPALIVED_LVS=y"
+            "CONFIG_KEEPALIVED_LVS_SYNCD=y"
+            "CONFIG_KEEPALIVED_LVS_64BIT_STATS=y"
+            "CONFIG_KEEPALIVED_FWMARK=y"
+            "CONFIG_KEEPALIVED_SNMP_CHECKER=y"
+            "CONFIG_KEEPALIVED_VRRP=y"
+            "CONFIG_KEEPALIVED_IPTABLES=y"
+            "CONFIG_KEEPALIVED_IP6TABLES=y"
+            "CONFIG_KEEPALIVED_NFTABLES=y"
+            "CONFIG_KEEPALIVED_SNMP_VRRP=y"
+            "CONFIG_KEEPALIVED_DBUS=y"
+            "CONFIG_KEEPALIVED_VRRP_AUTH=y"
+            "CONFIG_KEEPALIVED_CHECKSUM_COMPAT=y"
+            "CONFIG_KEEPALIVED_ROUTES=y"
+            "CONFIG_KEEPALIVED_LINKBEAT=y"
+            "CONFIG_PACKAGE_keepalived-sync=y"
+            "CONFIG_PACKAGE_kmod-nf-ipvs=y"
+            "CONFIG_PACKAGE_kmod-nf-ipvs-ftp=y"
+            "CONFIG_PACKAGE_kmod-nf-ipvs-sip=y"
+          )
+
+          for plugin in "${PLUGINS[@]}"; do
+            if ! grep -q "^$plugin" .config; then
+              echo "$plugin" >> .config
+              echo "✅ 已添加 $plugin"
+            else
+              echo "ℹ️ 已存在 $plugin"
+            fi
+          done
           make defconfig
 
       - name: 下载软件包
