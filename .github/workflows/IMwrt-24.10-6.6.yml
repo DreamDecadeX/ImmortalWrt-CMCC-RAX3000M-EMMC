@@ -436,7 +436,7 @@ jobs:
 
       - name: 编译 luci-app-keepalived-ha
         run: |
-          cd openwr
+          cd openwrt
           make defconfig
           make download -j1 V=s
           make package/luci-app-keepalived-ha/compile V=s
