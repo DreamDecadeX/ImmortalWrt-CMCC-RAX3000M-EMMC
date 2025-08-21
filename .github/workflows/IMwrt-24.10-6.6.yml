@@ -434,12 +434,16 @@ jobs:
           name: OpenWrt_config
           path: openwrt/config
 
-      - name: 编译 luci-app-keepalived-ha
+      - name: 安装调试工具链
         run: |
           cd openwrt
           make defconfig
           make download -j1 V=s
           make toolchain/install V=s
+
+      - name: 编译 luci-app-keepalived-ha
+        run: |
+          cd openwrt
           make package/luci-app-keepalived-ha/compile V=s
 
       - name: 编译固件
