@@ -465,6 +465,9 @@ jobs:
         if: env.ENABLE_KEEPALIVED == 'true'
         run: |
           cd openwrt
+          # 准备内核构建环境
+          make target/linux/prepare
+          # 编译包
           make package/luci-app-keepalived-ha/compile V=s
 
       - name: 编译固件
