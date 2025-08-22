@@ -391,10 +391,8 @@ jobs:
           # 更新 feeds
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-
           # 解析配置
           make defconfig
-
           # 构建索引并输出详细日志
           make package/index V=s
 
