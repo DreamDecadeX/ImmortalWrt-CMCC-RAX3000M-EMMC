@@ -399,7 +399,7 @@ jobs:
         timeout-minutes: 30
         run: |
           cd openwrt
-          make download -j8 || { echo "下载软件包失败"; exit 1; }
+          make download -j$(nproc) || { echo "下载软件包失败"; exit 1; }
           find dl -size -1024c -exec rm -f {} \;
 
       - name: 修改 5G 25dB
