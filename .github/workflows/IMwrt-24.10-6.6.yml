@@ -467,6 +467,7 @@ jobs:
         run: |
           cd openwrt
           echo ">>> 注入微信推送配置项..."
+          echo "CONFIG_PACKAGE_jq=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-wechatpush=y" >> .config
           echo "CONFIG_PACKAGE_luci-i18n-wechatpush-zh-cn=y" >> .config
           echo ">>> 执行 make defconfig，解析依赖关系"
