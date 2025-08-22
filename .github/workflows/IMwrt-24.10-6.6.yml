@@ -57,11 +57,11 @@ on:
         type: boolean
         required: true
         default: false
-      istore:
-        description: '集成iStore商店'
-        type: boolean
-        required: true
-        default: false
+      # istore:
+      #   description: '集成iStore商店'
+      #   type: boolean
+      #   required: true
+      #   default: false
       # enable_openclash:
       #   description: '集成openclash'
       #   type: boolean
@@ -125,6 +125,7 @@ jobs:
 
       - name: 检查源仓库更新
         id: check
+        continue-on-error: true
         run: |
           echo $REPO_PATH
           echo $REPO_BRANCH
@@ -629,10 +630,10 @@ jobs:
           ls -la ${{ env.FIRMWARE }} || echo "输出目录不存在: ${{ env.FIRMWARE }}"
 
       - name: 删除同名 tag（如已存在）
+        continue-on-error: true
         run: |
           git push --delete origin $RELEASE_TAG || true
           git tag -d $RELEASE_TAG || true
-        continue-on-error: true
 
       - name: 检查 release
         run: |
