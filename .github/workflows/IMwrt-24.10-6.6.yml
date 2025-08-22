@@ -267,7 +267,6 @@ jobs:
           echo "export CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
           ccache -M 5G
           echo "CONFIG_CCACHE=y" >> .config
-          make defconfig
 
       - name: 安装 GitHub CLI
         run: |
@@ -429,17 +428,10 @@ jobs:
           name: OpenWrt_config
           path: openwrt/config
 
-      - name: 配置构建参数
-        run: |
-          cd openwrt
-          make defconfig
-          make diffconfig > .config.diff || true
-
       - name: 初始化配置并下载依赖包
         timeout-minutes: 60
         run: |
           cd openwrt
-          make defconfig
           make download -j$(nproc) V=s || { echo "❌ 下载依赖包失败"; exit 1; }
 
       - name: 编译内核与关键模块
