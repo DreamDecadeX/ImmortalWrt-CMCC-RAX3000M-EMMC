@@ -306,7 +306,7 @@ jobs:
           echo "存入源仓库最新提交信息到文件"
           echo "$(git rev-parse HEAD)" > /workdir/last_checked_sha.txt
 
-      - name: 移动文件到根目录
+      - name: 移动last_checked_sha到根目录
         run: |
           mv /workdir/last_checked_sha.txt ./last_checked_sha.txt
           cat last_checked_sha.txt
