@@ -371,7 +371,7 @@ jobs:
         run: |
           cd openwrt
           echo ">>> 注入 keepalived.config 中的配置项..."
-          CONFIG_FILE="../config/keepalived.config"
+          CONFIG_FILE="config/keepalived.config"
           if [ ! -f "$CONFIG_FILE" ]; then
             echo "❌ 未找到配置文件: $CONFIG_FILE"
             exit 1
