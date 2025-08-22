@@ -388,8 +388,15 @@ jobs:
             echo "$opt=$val" >> .config
           done < "$CONFIG_FILE"
           echo ">>> 执行 make defconfig，解析依赖关系"
+          # 更新 feeds
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+          # 解析配置
           make defconfig
-          make package/index
+
+          # 构建索引并输出详细日志
+          make package/index V=s
 
       - name: 下载软件包
         id: package
