@@ -437,22 +437,22 @@ jobs:
           cd openwrt
           make download -j$(nproc) V=s || { echo "❌ 下载依赖包失败"; exit 1; }
 
-      - name: 编译内核与关键模块
-        run: |
-          cd openwrt
-          make target/linux/compile -j$(nproc)
-          make package/kernel/gpio-button-hotplug/compile V=s || { echo "❌ gpio-button-hotplug 编译失败"; exit 1; }
+      # - name: 编译内核与关键模块
+      #   run: |
+      #     cd openwrt
+      #     make target/linux/compile -j$(nproc)
+      #     make package/kernel/gpio-button-hotplug/compile V=s || { echo "❌ gpio-button-hotplug 编译失败"; exit 1; }
 
-      - name: 安装工具链并编译 keepalived 相关内核模块
-        if: env.ENABLE_KEEPALIVED == 'true'
-        run: |
-          cd openwrt
-          make toolchain/install -j$(nproc) || { echo "❌ toolchain 工具链 构建失败"; exit 1; }
-          make tools/install -j$(nproc) V=s || { echo "❌ host 工具链 构建失败"; exit 1; }
-          make package/kernel/kmod-ipvs/compile V=s || { echo "❌ kmod-ipvs 编译失败"; exit 1; }
-          make package/kernel/kmod-nf-conntrack/compile V=s || { echo "❌ kmod-nf-conntrack 编译失败"; exit 1; }
-          # 构建索引
-          make package/index V=s
+      # - name: 安装工具链并编译 keepalived 相关内核模块
+      #   if: env.ENABLE_KEEPALIVED == 'true'
+      #   run: |
+      #     cd openwrt
+      #     make toolchain/install -j$(nproc) || { echo "❌ toolchain 工具链 构建失败"; exit 1; }
+      #     make tools/install -j$(nproc) V=s || { echo "❌ host 工具链 构建失败"; exit 1; }
+      #     make package/kernel/kmod-ipvs/compile V=s || { echo "❌ kmod-ipvs 编译失败"; exit 1; }
+      #     make package/kernel/kmod-nf-conntrack/compile V=s || { echo "❌ kmod-nf-conntrack 编译失败"; exit 1; }
+      #     # 构建索引
+      #     make package/index V=s
 
       - name: 编译 OpenClash
         if: env.ENABLE_OPENCLASH == 'true'
@@ -476,12 +476,12 @@ jobs:
           echo ">>> 编译 luci-i18n-wechatpush-zh-cn"
           make package/luci-i18n-wechatpush-zh-cn/compile V=s || { echo "❌ wechatpush-zh-cn 编译失败"; exit 1; }
 
-      - name: 编译 luci-app-keepalived-ha
-        if: env.ENABLE_KEEPALIVED == 'true'
-        run: |
-          cd openwrt
-          make target/linux/prepare
-          make package/luci-app-keepalived-ha/compile V=s || { echo "❌ keepalived-ha 编译失败"; exit 1; }
+      # - name: 编译 luci-app-keepalived-ha
+      #   if: env.ENABLE_KEEPALIVED == 'true'
+      #   run: |
+      #     cd openwrt
+      #     make target/linux/prepare
+      #     make package/luci-app-keepalived-ha/compile V=s || { echo "❌ keepalived-ha 编译失败"; exit 1; }
 
       - name: 编译固件（不含安装）
         timeout-minutes: 120
