@@ -453,13 +453,13 @@ jobs:
           name: OpenWrt_config
           path: openwrt/config
 
-      - name: 安装调试工具链
-        if: env.ENABLE_KEEPALIVED == 'true'
-        run: |
-          cd openwrt
-          make defconfig
-          make download -j1
-          make toolchain/install
+      # - name: 安装调试工具链
+      #   if: env.ENABLE_KEEPALIVED == 'true'
+      #   run: |
+      #     cd openwrt
+      #     make defconfig
+      #     make download -j1
+      #     make toolchain/install
 
       # - name: 编译 luci-app-keepalived-ha
       #   if: env.ENABLE_KEEPALIVED == 'true'
