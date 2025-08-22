@@ -458,8 +458,8 @@ jobs:
         run: |
           cd openwrt
           make defconfig
-          make download -j1 V=s
-          make toolchain/install V=s
+          make download -j1
+          make toolchain/install
 
       # - name: 编译 luci-app-keepalived-ha
       #   if: env.ENABLE_KEEPALIVED == 'true'
