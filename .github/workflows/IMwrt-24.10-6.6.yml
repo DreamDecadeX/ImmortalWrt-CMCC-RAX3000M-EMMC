@@ -362,6 +362,7 @@ jobs:
           CONFIG_PACKAGE_keepalived=y
           CONFIG_PACKAGE_keepalived-sync=y
           CONFIG_PACKAGE_luci-app-keepalived=y
+          CONFIG_PACKAGE_luci-app-keepalived-ha=y
 
           # IPVS 支持
           CONFIG_PACKAGE_kmod-nf-ipvs=y
@@ -452,23 +453,6 @@ jobs:
         with:
           name: OpenWrt_config
           path: openwrt/config
-
-      # - name: 安装调试工具链
-      #   if: env.ENABLE_KEEPALIVED == 'true'
-      #   run: |
-      #     cd openwrt
-      #     make defconfig
-      #     make download -j1
-      #     make toolchain/install
-
-      # - name: 编译 luci-app-keepalived-ha
-      #   if: env.ENABLE_KEEPALIVED == 'true'
-      #   run: |
-      #     cd openwrt
-      #     # 准备内核构建环境
-      #     make target/linux/prepare
-      #     # 编译包
-      #     make package/luci-app-keepalived-ha/compile V=s
 
       - name: 编译固件
         id: compile
