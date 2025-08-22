@@ -449,8 +449,6 @@ jobs:
           cd openwrt
           make toolchain/install -j$(nproc) || { echo "❌ toolchain 工具链 构建失败"; exit 1; }
           make tools/install -j$(nproc) V=s || { echo "❌ host 工具链 构建失败"; exit 1; }
-          # 构建索引
-          make package/index V=s
 
       - name: 添加 OpenClash 和 微信推送
         run: |
