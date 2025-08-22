@@ -266,7 +266,6 @@ jobs:
           echo "export PATH=/usr/lib/ccache:$PATH" >> $GITHUB_ENV
           echo "export CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
           ccache -M 5G
-          echo "CONFIG_CCACHE=y" >> .config
 
       - name: 安装 GitHub CLI
         run: |
@@ -361,6 +360,7 @@ jobs:
           [ -e files ] && mv files openwrt/files
           [ -e config/$CONFIG_FILE ] && mv config/$CONFIG_FILE openwrt/.config
           echo "CONFIG_TARGET_mediatek_filogic_DEVICE_${{ matrix.device_model }}=y" >> openwrt/.config
+          echo "CONFIG_CCACHE=y" >> openwrt/.config
           chmod +x $DIY_P2_SH
           cd openwrt
           $GITHUB_WORKSPACE/$DIY_P2_SH
