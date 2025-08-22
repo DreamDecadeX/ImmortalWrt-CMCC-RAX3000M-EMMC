@@ -336,8 +336,8 @@ jobs:
         timeout-minutes: 30
         run: |
           cd openwrt
-          ./scripts/feeds update -a || { echo "更新 Feeds 失败"; exit 1; }
-          ./scripts/feeds install -a || { echo "安装 Feeds 失败"; exit 1; }
+          ./scripts/feeds update -a || { echo "❌ 更新 Feeds 失败"; exit 1; }
+          ./scripts/feeds install -a || { echo "❌ 安装 Feeds 失败"; exit 1; }
 
       - name: 添加 luci-app-keepalived-ha 插件
         if: env.ENABLE_KEEPALIVED == 'true'
@@ -399,7 +399,7 @@ jobs:
         timeout-minutes: 30
         run: |
           cd openwrt
-          make download -j$(nproc) || { echo "下载软件包失败"; exit 1; }
+          make download -j$(nproc) || { echo "❌ 下载软件包失败"; exit 1; }
           find dl -size -1024c -exec rm -f {} \;
 
       - name: 修改 5G 25dB
@@ -496,7 +496,7 @@ jobs:
         timeout-minutes: 60
         run: |
           cd openwrt
-          make package/install V=s || { echo "安装阶段失败"; exit 1; }
+          make package/install V=s || { echo "❌ 安装阶段失败"; exit 1; }
 
       - name: 设置输出变量
         if: success()
@@ -739,7 +739,7 @@ jobs:
                 echo "跳过当前 Release: $RELEASE"
                 continue
               fi
-              gh release delete "$RELEASE" --yes || { echo "删除 Release $RELEASE 失败"; exit 1; }
+              gh release delete "$RELEASE" --yes || { echo "❌ 删除 Release $RELEASE 失败"; exit 1; }
             done
           else
             echo "无需清理旧 Releases"
