@@ -393,8 +393,6 @@ jobs:
           ./scripts/feeds install -a
           # 解析配置
           make defconfig
-          # 构建索引并输出详细日志
-          make package/index V=s
 
       - name: 下载软件包
         id: package
@@ -449,9 +447,12 @@ jobs:
         if: env.ENABLE_KEEPALIVED == 'true'
         run: |
           cd openwrt
-          make toolchain/install -j$(nproc)
+          make toolchain/install -j$(nproc) || { echo "❌ toolchain 工具链 构建失败"; exit 1; }
+          make tools/install -j$(nproc) V=s || { echo "❌ host 工具链 构建失败"; exit 1; }
           make package/kernel/kmod-ipvs/compile V=s || { echo "❌ kmod-ipvs 编译失败"; exit 1; }
           make package/kernel/kmod-nf-conntrack/compile V=s || { echo "❌ kmod-nf-conntrack 编译失败"; exit 1; }
+          # 构建索引
+          make package/index V=s
 
       - name: 编译 OpenClash
         if: env.ENABLE_OPENCLASH == 'true'
