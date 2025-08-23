@@ -453,7 +453,7 @@ jobs:
           make defconfig
 
       - name: 编译固件
-        timeout-minutes: 180
+        id: compile
         run: |
           set -e
           cd openwrt
